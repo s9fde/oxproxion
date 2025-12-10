@@ -39,8 +39,9 @@ class LlmService(
     ): String? {
         val prompt = "Respond only with a 1 to 8 word title for a save title for this chat. Do not use Markdown in your response. Chat Contents: ```$chatContent```"
 
+        val substitutedPrompt = VariableSubstitution.substituteVariables(prompt)
         val messages = listOf(
-            FlexibleMessage(role = "user", content = JsonPrimitive(prompt))
+            FlexibleMessage(role = "user", content = JsonPrimitive(substitutedPrompt ?: prompt))
         )
 
         try {

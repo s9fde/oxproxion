@@ -67,6 +67,7 @@ import java.io.File
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.text.SimpleDateFormat
+import java.time.OffsetDateTime
 import java.util.Base64
 import java.util.Date
 import java.util.Locale
@@ -554,6 +555,16 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
 
         messagesForApiRequest.add(userMessage)
 
+        // Apply variable substitution right before network call
+        val substitutionNow = OffsetDateTime.now()
+        for (i in messagesForApiRequest.indices) {
+            val m = messagesForApiRequest[i]
+            val newContent = VariableSubstitution.substituteJsonContent(m.content, substitutionNow)
+            if (newContent != m.content) {
+                messagesForApiRequest[i] = m.copy(content = newContent)
+            }
+        }
+
         val uiMessages = _chatMessages.value?.toMutableList() ?: mutableListOf()
         uiMessages.add(userMessage)
         uiMessages.add(thinkingMessage)
@@ -605,6 +616,16 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         messagesForApiRequest.addAll(currentMessages.take(userMessageIndex))
         // Add the ORIGINAL user message (preserves imageUri for any future needs, but API uses content)
         messagesForApiRequest.add(userMessage)
+
+        // Apply variable substitution right before network call
+        val substitutionNow = OffsetDateTime.now()
+        for (i in messagesForApiRequest.indices) {
+            val m = messagesForApiRequest[i]
+            val newContent = VariableSubstitution.substituteJsonContent(m.content, substitutionNow)
+            if (newContent != m.content) {
+                messagesForApiRequest[i] = m.copy(content = newContent)
+            }
+        }
 
         // UI: Add only thinking (no new user bubble—original is kept)
         val uiMessages = _chatMessages.value?.toMutableList() ?: mutableListOf()
