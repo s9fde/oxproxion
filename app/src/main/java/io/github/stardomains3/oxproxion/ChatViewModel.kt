@@ -560,7 +560,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         for (i in messagesForApiRequest.indices) {
             val m = messagesForApiRequest[i]
             val newContent = VariableSubstitution.substituteJsonContent(m.content, substitutionNow)
-            if (newContent !== m.content) {
+            if (newContent != m.content) {
                 messagesForApiRequest[i] = m.copy(content = newContent)
             }
         }
@@ -622,7 +622,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         for (i in messagesForApiRequest.indices) {
             val m = messagesForApiRequest[i]
             val newContent = VariableSubstitution.substituteJsonContent(m.content, substitutionNow)
-            if (newContent !== m.content) {
+            if (newContent != m.content) {
                 messagesForApiRequest[i] = m.copy(content = newContent)
             }
         }
