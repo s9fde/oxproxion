@@ -546,8 +546,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         val messagesForApiRequest = mutableListOf<FlexibleMessage>()
 
         if (systemMessage != null) {
-            val substitutedSystemMsg = VariableSubstitution.substituteVariables(systemMessage)
-            messagesForApiRequest.add(FlexibleMessage(role = "system", content = JsonPrimitive(substitutedSystemMsg ?: systemMessage)))
+            messagesForApiRequest.add(FlexibleMessage(role = "system", content = JsonPrimitive(systemMessage)))
         }
 
         _chatMessages.value?.let { history ->
@@ -611,8 +610,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         // Build API messages: History up to (and including) the user message
         val messagesForApiRequest = mutableListOf<FlexibleMessage>()
         if (systemMessage != null) {
-            val substitutedSystemMsg = VariableSubstitution.substituteVariables(systemMessage)
-            messagesForApiRequest.add(FlexibleMessage(role = "system", content = JsonPrimitive(substitutedSystemMsg ?: systemMessage)))
+            messagesForApiRequest.add(FlexibleMessage(role = "system", content = JsonPrimitive(systemMessage)))
         }
         // Add history BEFORE user message
         messagesForApiRequest.addAll(currentMessages.take(userMessageIndex))
